@@ -3,6 +3,8 @@ package com.RedisExample.redisApp.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +18,7 @@ import com.RedisExample.redisApp.Repository.ProductDal;
 
 @RestController
 @RequestMapping("/api")
+@EnableCaching
 public class ProductController {
 	
 	@Autowired
@@ -27,7 +30,9 @@ public class ProductController {
     }
 
     @GetMapping("/getProducts")
+    @Cacheable(cacheNames = "ProductMemory")
     public List<Product> getAllProducts() {
+    	System.out.println("fetch from Dd /getProducts");
         return dao.findAll();
     }
 
